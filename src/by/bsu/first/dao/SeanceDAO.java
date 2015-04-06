@@ -1,17 +1,10 @@
 package by.bsu.first.dao;
 
 import by.bsu.first.entity.Seance;
-import by.bsu.first.entity.User;
 import by.bsu.first.exception.DAOException;
-
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-/**
- * Created by Пользователь on 07.11.2014.
- */
 public class SeanceDAO extends AbstractDAO {
     public static final String SQL_SELECT_ALL_SEANCES = "SELECT seanceId, seance.movieId,movieName, seanceDate, seanceTime, price " +
             "FROM seance JOIN movie ON seance.movieId = movie.movieId WHERE seanceDate >= ?" +

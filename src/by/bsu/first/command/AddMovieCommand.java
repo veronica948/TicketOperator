@@ -12,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.Locale;
 
-/**
- * Created by Пользователь on 27.11.2014.
- */
 public class AddMovieCommand implements Command {
     private static Logger logger = Logger.getLogger(AddMovieCommand.class);
     private static final String PARAM_MOVIE_NAME = "movieName";
@@ -24,7 +21,7 @@ public class AddMovieCommand implements Command {
     private static final String PARAM_MOVIE_ACTORS = "actors";
     @Override
     public String execute(HttpServletRequest request) throws CommandException {
-        String page = ConfigManager.getProperty("path.page.admin");;
+        String page = ConfigManager.getProperty("path.page.movie.add");
         String movieName = request.getParameter(PARAM_MOVIE_NAME);
         String description = request.getParameter(PARAM_MOVIE_DESCRIPTION);
         String country = request.getParameter(PARAM_MOVIE_COUNTRY);
@@ -47,6 +44,7 @@ public class AddMovieCommand implements Command {
             try {
                 MovieLogic.insertMovie(movieName, description, country, actors, releaseDate);
                 request.setAttribute("successfulOperation", MessageManager.getMessage("message.operation.success",locale));
+                page = ConfigManager.getProperty("path.page.admin");
             } catch (LogicException e) {
                 logger.error(e.getMessage(),e.getCause());
                 request.setAttribute("impossibleOperation",MessageManager.getMessage("message.movie.add.impossible", locale));

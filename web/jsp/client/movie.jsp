@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Пользователь
-  Date: 11.11.2014
-  Time: 9:04
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -44,7 +38,7 @@ ${noSeances}
     <c:forEach var="elem" items="${seances}">
         <tr>
             <td><fmt:formatDate value="${elem.date}"/></td>
-            <td><c:out value="${elem.time}"/></td>
+            <td><fmt:formatDate value="${elem.time}" type="time" timeStyle="short"/></td>
             <td><c:out value="${elem.price}"/></td>
             <td><a href="controller?command=show_tickets&seanceId=${elem.seanceId}">
                 <fmt:message key="seance.tickets" bundle="${ rb }"/>

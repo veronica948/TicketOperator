@@ -55,7 +55,7 @@
 <fmt:message key="seance.price"/>:   </td><td>
      ${ticket.price}
     </td></tr></table>
-<form action="${pageContext.request.contextPath}/controller">
+<form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" name="command" value="make_order"/>
     <input type="hidden" name="ticketId" value="${ticket.ticketId}">
     <input type="submit" value="<fmt:message key="ticket.order.make"/>">

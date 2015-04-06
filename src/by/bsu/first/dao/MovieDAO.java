@@ -26,8 +26,29 @@ public class MovieDAO extends AbstractDAO {
     public static final String SQL_SELECT_ORDERS_BY_MOVIE_NAME = "SELECT orderId FROM ticketOrder " +
             "JOIN ticket ON ticketOrder.ticketId = ticket.ticketId JOIN seance ON ticket.seanceId = seance.seanceId " +
             "JOIN movie ON seance.movieId = movie.movieId WHERE movieName LIKE ?";
+    public static final String SQL_GET_RELEASE_DATE = "SELECT releaseDate FROM movie WHERE movieName LIKE ?";
     public MovieDAO(Connection connection) {
         super(connection);
+    }
+    public Date findReleaseDateByMovieName(String movieName) throws DAOException{
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Date date = null;
+        try {
+            ps = connection.prepareStatement(SQL_GET_RELEASE_DATE);
+            ps.setString(1, movieName);
+            rs = ps.executeQuery();
+            if(rs.next()) {
+                date = rs.getDate(1);
+            }
+        }
+        catch (SQLException e) {
+            throw new DAOException("SQL exception (request or table failed):",e);
+        }
+        finally {
+            close(ps);
+        }
+        return date;
     }
     public ArrayList<Movie> findAllMovies() throws DAOException {
         Statement st = null;

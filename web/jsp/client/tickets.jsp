@@ -38,8 +38,14 @@ ${seanceTime}
                 <td><c:out value="${elem.row}"/></td>
                 <td><c:out value="${elem.place}"/></td>
                 <td><c:out value="${elem.price}"/></td>
-                <td><a href="${ pageContext.request.contextPath }/controller?command=show_order_page&ticketId=${elem.ticketId}">
-                    <fmt:message key="ticket.order.make"/></a></td>
+                <td>
+                    <form action="${ pageContext.request.contextPath }/controller" method="get">
+                        <input type="hidden" name="command" value="show_order_page">
+
+                        <input type="hidden" name="ticketId" value="${elem.ticketId}"/>
+                        <input type="submit" value="<fmt:message key="ticket.order.make"/>">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
     </table>

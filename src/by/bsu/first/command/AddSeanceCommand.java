@@ -2,6 +2,7 @@ package by.bsu.first.command;
 
 import by.bsu.first.exception.CommandException;
 import by.bsu.first.exception.LogicException;
+import by.bsu.first.logic.MovieLogic;
 import by.bsu.first.logic.SeanceLogic;
 import by.bsu.first.manager.ConfigManager;
 import by.bsu.first.manager.MessageManager;
@@ -50,6 +51,10 @@ public class AddSeanceCommand implements Command {
             int price = Integer.parseInt(priceValue);
             if(price <= 0) {
                 request.setAttribute("incorrectPrice", MessageManager.getMessage("message.price.incorrect",locale));
+                return page;
+            }
+            if(MovieLogic.isBeforeReleaseDate(date,movieName)) {
+                request.setAttribute("impossibleSeanceDate", MessageManager.getMessage("message.seance.date.before.release",locale));
                 return page;
             }
             if((LocalDate.now().compareTo(date.toLocalDate()) == 0 && LocalTime.now().isAfter(time.toLocalTime())) || LocalDate.now().isAfter(date.toLocalDate())) {

@@ -1,7 +1,6 @@
 package by.bsu.first.command;
 
 import by.bsu.first.exception.CommandException;
-import by.bsu.first.exception.DAOException;
 import by.bsu.first.exception.LogicException;
 import by.bsu.first.logic.SeanceLogic;
 import by.bsu.first.manager.ConfigManager;
@@ -10,9 +9,6 @@ import by.bsu.first.manager.MessageManager;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-/**
- * Created by Пользователь on 27.11.2014.
- */
 public class DeleteSeanceCommand implements Command {
     private static final String PARAM_SEANCE_ID = "seanceId";
     @Override

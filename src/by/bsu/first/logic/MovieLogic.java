@@ -142,4 +142,21 @@ public class MovieLogic {
             Pool.getPool().returnConnection(cn);
         }
     }
+    public static boolean isBeforeReleaseDate(Date seanceDate,String movieName) throws LogicException {
+        Connection cn = null;
+        try {
+            cn = Pool.getPool().getConnection();
+            MovieDAO dao = new MovieDAO(cn);
+            Date date = dao.findReleaseDateByMovieName(movieName);
+            if(date == null) {
+                return false;
+            } else {
+                return seanceDate.toLocalDate().isBefore(date.toLocalDate());
+            }
+        } catch (PoolConnectionException |DAOException e) {
+            throw new LogicException(e.getCause());
+        }  finally {
+            Pool.getPool().returnConnection(cn);
+        }
+    }
 }
