@@ -1,0 +1,4 @@
+*.iml
+out/*
+.idea/*
+src/resources/database.properties
