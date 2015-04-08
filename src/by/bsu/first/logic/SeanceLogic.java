@@ -79,7 +79,7 @@ public class SeanceLogic {
             TicketDAO ticketDAO = new TicketDAO(cn);
             ArrayList<Integer> places = placeDAO.getAllPlaces();
             int seanceId = seanceDAO.findSeanceId(date, time);
-             ticketDAO.insertTickets(seanceId,places);
+            ticketDAO.insertTickets(seanceId,places);
         } catch (PoolConnectionException | DAOException e) {
             throw new LogicException(e.getCause());
         } finally {
@@ -153,6 +153,18 @@ public class SeanceLogic {
                 return true;
             }
             return false;
+        } catch (PoolConnectionException | DAOException e) {
+            throw new LogicException(e.getCause());
+        } finally {
+            Pool.getPool().returnConnection(cn);
+        }
+    }
+    public static boolean existsSeanceTime(Date date, Time time) throws LogicException {
+        Connection cn = null;
+        try {
+            cn = Pool.getPool().getConnection();
+            SeanceDAO dao = new SeanceDAO(cn);
+            return dao.existsSeance(date,time);
         } catch (PoolConnectionException | DAOException e) {
             throw new LogicException(e.getCause());
         } finally {

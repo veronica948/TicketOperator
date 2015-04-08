@@ -28,7 +28,9 @@ public class SeanceDAO extends AbstractDAO {
             "JOIN ticket ON ticketOrder.ticketId = ticket.ticketId JOIN seance ON ticket.seanceId = seance.seanceId " +
             " WHERE seance.seanceId = ?";
     public static final String SQL_DELETE_SEANCE= "DELETE FROM seance WHERE seanceId = ?";
-    public static final String SQL_GET_DATA_AND_TIME_BY_ID = "SELECT seanceDate, seanceTime FROM seance WHERE seanceId = ? ";
+    public static final String SQL_GET_DATE_AND_TIME_BY_ID = "SELECT seanceDate, seanceTime FROM seance WHERE seanceId = ? ";
+    public static final String SQL_GET_SEANCE_BY_DATE_AND_TIME = "SELECT seanceId FROM seance WHERE seanceDate = ? AND seanceTime = ? ";
+
 
     public SeanceDAO(Connection connection) {
         super(connection);
@@ -312,7 +314,7 @@ public class SeanceDAO extends AbstractDAO {
         ResultSet rs = null;
         Seance seance = null;
         try {
-            ps = connection.prepareStatement(SQL_GET_DATA_AND_TIME_BY_ID);
+            ps = connection.prepareStatement(SQL_GET_DATE_AND_TIME_BY_ID);
             ps.setInt(1,seanceId);
             rs = ps.executeQuery();
             Date date =  null;
@@ -325,6 +327,26 @@ public class SeanceDAO extends AbstractDAO {
             return seance;
         }
         catch (SQLException e) {
+            throw new DAOException("SQL exception (request or table failed)",e);
+        }
+        finally {
+            close(ps);
+        }
+    }
+    public boolean existsSeance(Date date, Time time) throws DAOException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = connection.prepareStatement(SQL_GET_SEANCE_BY_DATE_AND_TIME);
+            ps.setDate(1, date);
+            ps.setTime(2, time);
+            rs = ps.executeQuery();
+            if(rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
             throw new DAOException("SQL exception (request or table failed)",e);
         }
         finally {

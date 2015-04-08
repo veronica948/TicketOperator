@@ -19,11 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
 
-/**
- * Created by Пользователь on 27.11.2014.
- */
 public class AddSeanceCommand implements Command {
-    private static Logger logger = Logger.getLogger(AddSeanceCommand.class);
     private static final String PARAM_MOVIE_NAME = "movieName";
     private static final String PARAM_SEANCE_DATE = "seanceDate";
     private static final String PARAM_SEANCE_TIME = "seanceTime";
@@ -61,12 +57,15 @@ public class AddSeanceCommand implements Command {
                 request.setAttribute("incorrectDateTime", MessageManager.getMessage("message.date.time.incorrect",locale));
                 return page;
             }
+            if(SeanceLogic.existsSeanceTime(date,time)) {
+                request.setAttribute("impossibleOperation",MessageManager.getMessage("message.seance.add.impossible", locale));
+                return page;
+            }
             SeanceLogic.addSeance(movieName, date, time, price);
             request.setAttribute("successfulOperation", MessageManager.getMessage("message.operation.success",locale));
         }
         catch (LogicException e) {
-            logger.error(e.getMessage(),e.getCause());
-            request.setAttribute("impossibleOperation",MessageManager.getMessage("message.seance.add.impossible", locale));
+            throw new CommandException(e.getCause());
         }
         catch (ParseException e) {
             throw new CommandException("impossible convert time",e);

@@ -13,7 +13,6 @@ import java.sql.Date;
 import java.util.Locale;
 
 public class AddMovieCommand implements Command {
-    private static Logger logger = Logger.getLogger(AddMovieCommand.class);
     private static final String PARAM_MOVIE_NAME = "movieName";
     private static final String PARAM_MOVIE_DESCRIPTION = "description";
     private static final String PARAM_MOVIE_COUNTRY = "country";
@@ -42,12 +41,15 @@ public class AddMovieCommand implements Command {
             }
             String actors = request.getParameter(PARAM_MOVIE_ACTORS);
             try {
+                if(MovieLogic.existsMovie(movieName)) {
+                    request.setAttribute("impossibleOperation",MessageManager.getMessage("message.movie.add.impossible", locale));
+                    return page;
+                }
                 MovieLogic.insertMovie(movieName, description, country, actors, releaseDate);
                 request.setAttribute("successfulOperation", MessageManager.getMessage("message.operation.success",locale));
                 page = ConfigManager.getProperty("path.page.admin");
             } catch (LogicException e) {
-                logger.error(e.getMessage(),e.getCause());
-                request.setAttribute("impossibleOperation",MessageManager.getMessage("message.movie.add.impossible", locale));
+                throw new CommandException(e.getCause());
             }
         }
         return page;

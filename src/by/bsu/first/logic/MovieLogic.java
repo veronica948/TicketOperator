@@ -159,4 +159,21 @@ public class MovieLogic {
             Pool.getPool().returnConnection(cn);
         }
     }
+    public static boolean existsMovie(String movieName) throws LogicException {
+        Connection cn = null;
+        try {
+            cn = Pool.getPool().getConnection();
+            MovieDAO dao = new MovieDAO(cn);
+            Movie movie = dao.findMovieByMovieName(movieName);
+            if(movie == null) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (PoolConnectionException |DAOException e) {
+            throw new LogicException(e.getCause());
+        }  finally {
+            Pool.getPool().returnConnection(cn);
+        }
+    }
 }

@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Locale;
 
-/**
- * Created by Пользователь on 04.12.2014.
- */
 public class ShowOrderPageCommand implements Command {
     private static final String PARAM_TICKET_ID = "ticketId";
     @Override
